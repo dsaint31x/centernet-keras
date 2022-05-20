@@ -9,6 +9,7 @@ from data import VOCDataset
 from losses import centernet_loss
 from callbacks import VisCallback
 
+# GPU list load
 gpus = tf.config.list_physical_devices('GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)

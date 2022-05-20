@@ -13,12 +13,16 @@ from imgaug.augmentables.bbs import BoundingBoxesOnImage
 ia.seed(0)
 
 
+# image preprocessing
 def preprocess_input(image):
     image = np.array(image, dtype=np.float32)
+    
+    # ?
     return image / 127.5 - 1
 
 
 def gaussian_radius(size, min_iou=0.7):
+    # image의 size가 input으로 들어감
     h, w = size
 
     # intersection
