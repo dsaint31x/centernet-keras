@@ -194,7 +194,7 @@ class CenterNet(keras.Model):
             'freeze': self.freeze,
             'finetune': self.finetune,
             'backbone_weights': self.backbone_weights,
-            'backbone' = self.backbone,
+            'backbone' : self.backbone,
         })
         return config
 
