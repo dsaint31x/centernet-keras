@@ -185,6 +185,19 @@ class CenterNet(keras.Model):
         self.backbone_weights = backbone_weights
         self.backbone = backbone
 
+    def get_config(self):
+        config = super(CenterNet,self).get_config()
+        config.update({
+            'class_name': self.class_name,
+            'num_classes': self.num_classes,
+            'max_objects': self.max_object,
+            'freeze': self.freeze,
+            'finetune': self.finetune,
+            'backbone_weights': self.backbone_weights,
+            'backbone' = self.backbone,
+        })
+        return config
+
     def build(self, input_shape):
         self.model = centernet(input_shape[1:], self.num_classes,
                                self.backbone, self.backbone_weights, self.freeze, self.finetune)

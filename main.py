@@ -31,10 +31,13 @@ def main():
 
     # callbacks
     logdir = os.path.join(log_path, datetime.now().strftime("%Y%m%d-%H%M%S"))
+    ckpt_h5 = os.path.join(logdir,'ckpt.h5')
     tb_callback = keras.callbacks.TensorBoard(logdir, update_freq=100)
     ckpt_callback = keras.callbacks.ModelCheckpoint(
-        filepath=logdir,
+        #filepath=logdir,
+        filepath=ckpt_h5,
         save_best_only=True,
+        save_weights_only=True,
         monitor="val_loss",
         verbose=1,
     )
@@ -82,9 +85,10 @@ if __name__ == "__main__":
     ckpt_path = ""
     # ckpt_path =  "./logs/test/20220417-140619"
 
-    data_path = "E:\github2\centernet-keras\VOCdevkit\VOC2007"
-    train_file = "VOCdevkit\VOC2007\ImageSets\Main\\train.txt"
-    val_file = "VOCdevkit\VOC2007\ImageSets\Main\\val.txt"
+    # data_path = "E:\github2\centernet-keras\VOCdevkit\VOC2007"
+    data_path = "../VOCdevkit/VOC2007"
+    train_file = "../VOCdevkit/VOC2007/ImageSets/Main/train.txt"
+    val_file = "../VOCdevkit/VOC2007/ImageSets/Main/val.txt"
 
     log_path = "./logs/test"
 
