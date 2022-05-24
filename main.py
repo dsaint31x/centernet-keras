@@ -87,9 +87,15 @@ if __name__ == "__main__":
     # ckpt_path =  "./logs/test/20220417-140619"
 
     # data_path = "E:\github2\centernet-keras\VOCdevkit\VOC2007"
-    data_path = "../VOCdevkit/VOC2007"
-    train_file = "../VOCdevkit/VOC2007/ImageSets/Main/train.txt"
-    val_file = "../VOCdevkit/VOC2007/ImageSets/Main/val.txt"
+    #data_path = "../VOCdevkit/VOC2007"
+    #train_file = "../VOCdevkit/VOC2007/ImageSets/Main/train.txt"
+    #val_file = "../VOCdevkit/VOC2007/ImageSets/Main/val.txt"
+    
+    
+    data_path = "..\\..\\Centernet\\VOC2007"
+    train_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\train.txt"
+    val_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\val.txt"
+    
 
     log_path = "./logs/test"
 

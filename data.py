@@ -125,8 +125,10 @@ class VOCDataset:
 
     def getitem(self, idx):
         data_id = self.data_ids[idx]
-        image_file = self.path + f"/JPEGImages/{data_id}.jpg"
-        annot_file = self.path + f"/Annotations/{data_id}.xml"
+        #image_file = self.path + f"/JPEGImages/{data_id}.jpg"
+        #annot_file = self.path + f"/Annotations/{data_id}.xml"
+        image_file = self.path + f"/output/{data_id}.jpg"
+        annot_file = f"./xml/output/{data_id}.xml"
 
         # fetch raw data
         if not os.path.exists(image_file):
@@ -156,6 +158,7 @@ class VOCDataset:
                 int(xmlbox.find('xmax').text),
                 int(xmlbox.find('ymax').text)
             ]
+            
             boxes.append(b)
             cls_ids.append(cls_id)
 
