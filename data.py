@@ -84,7 +84,7 @@ class VOCDataset:
         "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat",
         "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
         "pottedplant", "sheep", "sofa", "train", "tvmonitor"
-    ]"""
+    ]
     ID2LANDMARK = [
         'Nasion',
         'Sella',
@@ -132,7 +132,9 @@ class VOCDataset:
         'Soft tissue Gnathion',
         'Soft tissue Menton',
         'Cervical point',  
-    ]
+    ]"""
+    
+    ID2LABEL = ['Glabella', 'R3', 'Nasion']
 
     def __init__(self, path, 
                  input_shape, 

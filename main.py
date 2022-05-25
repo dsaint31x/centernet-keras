@@ -38,7 +38,7 @@ def main():
         #filepath=logdir,
         filepath=ckpt_h5,
         save_best_only=True,
-        save_weights_only=True,
+        save_weights_only=False,
         monitor="val_loss",
         verbose=1,
     )
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     input_shape = (512, 512)
     backbone = 'resnet50'
 
-    epochs = 50
+    epochs = 10
     batch_size = 2
     buffer_size = batch_size * 5
     lr = 1e-2
