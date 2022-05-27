@@ -123,7 +123,7 @@ def img_vis(images, boxes, cls_ids, reg_masks, detections, colors, class_names):
     images0 = images[0]
     boxes0 = boxes[0]
     cls_ids0 = cls_ids[0]
-    detections0 = detections[0]
+    detections0 = detections[0].numpy()
 
     images0 = (images0 + 1)*127.5
     # images0 = (images0 * std + mean)*255
@@ -131,22 +131,25 @@ def img_vis(images, boxes, cls_ids, reg_masks, detections, colors, class_names):
     
     # ground truth
     num_valid = int(np.sum(reg_masks[0]))
-    for i in range(num_valid):
+    """for i in range(num_valid):
         x1, y1, x2, y2 = boxes0[i].astype(np.int32) * 4
         cls_id = cls_ids0[i].astype(np.int32)
         color = [int(c) for c in colors[cls_id]]
         cv2.rectangle(images0, (x1, y1), (x2, y2), color, 1)
         text = "{}".format(class_names[cls_id])
         cv2.putText(images0, text, (x1, y2 + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
-                    color, 1)
+                    color, 1)"""
         
     # pred
+    print(type(detections0))
     boxes_pred = detections0[:, :4].astype(np.int32)
     conf_pred = detections0[:, 4].astype(np.float32)
     cls_ids_pred = detections0[:, 5].astype(np.uint8)
-    num_valid = int(np.sum(conf_pred > 0.3))
+    print(conf_pred)
+    num_valid = int(np.sum(conf_pred > 0.09))
     for i in range(num_valid):
         x1, y1, x2, y2 = boxes_pred[i].astype(np.int32) * 4
+        print(x1, y1, x2, y2)
         cls_id = cls_ids_pred[i].astype(np.int32)
         color = [int(c) for c in colors[cls_id]]
         color[1] = 255

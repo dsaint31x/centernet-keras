@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotation><filename>S0582</filename><size><width>512</width><height>512</height><depth>3</depth></size><object><name>Glabella</name><bndbox><xmin>421</xmin><ymin>126</ymin><xmax>485</xmax><ymax>190</ymax></bndbox></object><object><name>R3</name><bndbox><xmin>265</xmin><ymin>238</ymin><xmax>329</xmax><ymax>302</ymax></bndbox></object><object><name>Nasion</name><bndbox><xmin>399</xmin><ymin>148</ymin><xmax>463</xmax><ymax>212</ymax></bndbox></object></annotation>
