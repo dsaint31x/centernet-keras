@@ -220,7 +220,7 @@ class CenterNet(keras.Model):
         indices = y["indices"]
 
         with tf.GradientTape() as tape:
-            hm_pred, wh_pred, reg_pred = self(images, training=True)
+            hm_pred, wh_pred, reg_pred = self(images, training=ytTrue)
             hm_loss, wh_loss, reg_loss = centernet_loss(
                 (hm_true, wh_true, reg_true, reg_masks, indices),
                 (hm_pred, wh_pred, reg_pred))
