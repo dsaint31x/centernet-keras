@@ -46,7 +46,7 @@ def gaussian_radius(size, min_iou=0.7):
     sq3 = np.sqrt(b3**2 - 4 * a3 * c3)
     r3 = (-b3 + sq3) / 2
 
-    return min(r1, r2, r3)
+    return min(r1, r2, r3)*4 #dsaint31
 
 
 def draw_gaussian(heatmap, center, radius, k=1):
@@ -85,7 +85,7 @@ class VOCDataset:
         "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
         "pottedplant", "sheep", "sofa", "train", "tvmonitor"
     ]"""
-    ID2LANDMARK = [
+    ID2LABEL = [
         'Nasion',
         'Sella',
         'Porion',
@@ -173,10 +173,10 @@ class VOCDataset:
 
     def getitem(self, idx):
         data_id = self.data_ids[idx]
-        #image_file = self.path + f"/JPEGImages/{data_id}.jpg"
-        #annot_file = self.path + f"/Annotations/{data_id}.xml"
-        image_file = self.path + f"/output/{data_id}.jpg"
-        annot_file = f"./xml/output/{data_id}.xml"
+        image_file = self.path + f"/JPEGImages/{data_id}.jpg"
+        annot_file = self.path + f"/Annotations/{data_id}.xml"
+        # image_file = self.path + f"/output/{data_id}.jpg"
+        # annot_file = f"./xml/output/{data_id}.xml"
 
         # fetch raw data
         if not os.path.exists(image_file):
@@ -221,6 +221,8 @@ class VOCDataset:
             if self.seq is None:
                 self.seq = iaa.Sequential([
                     iaa.Fliplr(0.5),
+                    iaa.Rotate((-15,15)), #dsaint31
+                    iaa.ShearX((-20,20)), #dsaint31
                     iaa.Resize({
                         "height": (0.7, 1.3),
                         "weight": (0.7, 1.3)
@@ -268,6 +270,7 @@ class VOCDataset:
                 if h > 0 and w > 0:
                     radius = gaussian_radius((math.ceil(h), math.ceil(w)))
                     radius = max(0, int(radius))
+                    radius = max(0, int(radius)) #dsaint31
                     #-------------------------------------------------#
                     #   计算真实框所属的特征点
                     #-------------------------------------------------#

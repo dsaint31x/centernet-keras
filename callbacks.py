@@ -64,10 +64,18 @@ class VisCallback(keras.callbacks.Callback):
                 boxes_pred = detections0[:, :4].astype(np.int32)
                 conf_pred = detections0[:, 4].astype(np.float32)
                 cls_ids_pred = detections0[:, 5].astype(np.uint8)
-                num_valid = int(np.sum(conf_pred > 0.2))
-                for i in range(num_valid):
+                num_valid = int(np.sum(conf_pred > 0.09))
+                ds_ck_cls = set() #dsaint31
+                #for i in range(num_valid):
+                for i in range(len(conf_pred)):
                     x1, y1, x2, y2 = boxes_pred[i].astype(np.int32) * 4
                     cls_id = cls_ids_pred[i].astype(np.int32)
+                    if cls_id not in ds_ck_cls:
+                        ds_ck_cls.add(cls_id)
+                    else:
+                        continue
+                    if len(ds_ck_cls) == 3:
+                        break #dsaint31
                     color = [int(c) for c in self.colors[cls_id]]
                     cv2.rectangle(images0, (x1, y1), (x2, y2), color, 1)
                     text = "{}: {:.4f}".format(self.class_names[cls_id], conf_pred[i])

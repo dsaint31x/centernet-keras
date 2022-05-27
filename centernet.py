@@ -41,6 +41,19 @@ def topk(hm, max_objects=100):
     b, h, w, c = hm.shape
     hm = tf.reshape(hm, (b, -1))  # (b, h*w*c)
 
+    """
+    hm = tf.transpose(hm,perm=[0,3,1,2])
+
+    hm = tf.reshape(hm, (b,c, -1))  # (b, h*w*c)
+    scores, indices = tf.math.top_k(hm, k=max_objects//3, sorted=True)  # (b, c, k)
+    scores = tf.transpose(scores,perm=[0,2,1])
+    indices = tf.transpose(indices,perm=[0,2,1])
+    scores = tf.reshape(scores,(b,-1))
+    indices = tf.reshape(indices,(b,-1))
+    """
+
+
+
     scores, indices = tf.math.top_k(hm, k=max_objects, sorted=True)  # (b, k)
 
     class_ids = indices % c
@@ -153,7 +166,7 @@ def centernet(input_shape,
               backbone_weights=None,
               freeze=False,
               finetune=False):
-
+    print(input_shape)
     if backbone == "resnet50":
         backbone_model = ResNet50(input_shape, weights=backbone_weights)   
         backbone_model.trainable = not freeze
@@ -199,6 +212,7 @@ class CenterNet(keras.Model):
         return config
 
     def build(self, input_shape):
+        print('build:freeze=',self.freeze)
         self.model = centernet(input_shape[1:], self.num_classes,
                                self.backbone, self.backbone_weights, self.freeze, self.finetune)
         return super().build(input_shape)

@@ -8,6 +8,7 @@ from centernet import CenterNet
 from data import VOCDataset
 from losses import centernet_loss
 from callbacks import VisCallback
+import numpy as np
 
 # GPU list load
 gpus = tf.config.list_physical_devices('GPU')
@@ -50,12 +51,16 @@ def main():
     # load model
     model = CenterNet(train_dataset_raw.class_names,
                       backbone_weights='imagenet',
+                      max_objects = 300, #dsaint31
                       freeze=freeze,
                       finetune=finetune)
-
     if ckpt_path:
+        model(tf.ones((1,512,512,3)))
         model.load_weights(ckpt_path)
         print(f"Loding pretrained weights from {ckpt_path} !")
+
+    model.freeze = True
+
 
     # model compile
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
@@ -65,6 +70,7 @@ def main():
         staircase=True)
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
     model.compile(optimizer=optimizer, loss=centernet_loss, run_eagerly=False)
+    
 
     model.fit(x=train_dataset,
               validation_data=val_dataset,
@@ -77,24 +83,26 @@ if __name__ == "__main__":
     input_shape = (512, 512)
     backbone = 'resnet50'
 
-    epochs = 50
+    epochs = 1500
     batch_size = 2
     buffer_size = batch_size * 5
     lr = 1e-2
-    freeze = True
+    freeze = True 
+    #freeze = False #dsaint31 
     finetune = True or freeze
-    ckpt_path = ""
+    ckpt_path = "./logs/test/20220525-231955/ckpt.h5"
+    ckpt_path = "./logs/test/20220526-002254/ckpt.h5"
     # ckpt_path =  "./logs/test/20220417-140619"
 
     # data_path = "E:\github2\centernet-keras\VOCdevkit\VOC2007"
-    #data_path = "../VOCdevkit/VOC2007"
-    #train_file = "../VOCdevkit/VOC2007/ImageSets/Main/train.txt"
-    #val_file = "../VOCdevkit/VOC2007/ImageSets/Main/val.txt"
+    data_path = "../VOCdevkit/ceph_VOC2007"
+    train_file = "../VOCdevkit/ceph_VOC2007/ImageSets/Main/train.txt"
+    val_file = "../VOCdevkit/ceph_VOC2007/ImageSets/Main/val.txt"
     
     
-    data_path = "..\\..\\Centernet\\VOC2007"
-    train_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\train.txt"
-    val_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\val.txt"
+    # data_path = "..\\..\\Centernet\\VOC2007"
+    # train_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\train.txt"
+    # val_file = "..\\..\\Centernet\\VOC2007\\ImageSets\\ceph\\val.txt"
     
 
     log_path = "./logs/test"
