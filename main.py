@@ -36,10 +36,11 @@ def main():
     ckpt_h5 = os.path.join(logdir,'ckpt.h5')
     tb_callback = keras.callbacks.TensorBoard(logdir, update_freq=100)
     ckpt_callback = keras.callbacks.ModelCheckpoint(
-        #filepath=logdir,
         filepath=ckpt_h5,
+        save_weights_only=True,
+        #filepath=logdir,
+        #save_weights_only=False,
         save_best_only=True,
-        save_weights_only=False,
         monitor="val_loss",
         verbose=1,
     )
@@ -54,10 +55,6 @@ def main():
                       max_objects = 300, #dsaint31
                       freeze=freeze,
                       finetune=finetune)
-    if ckpt_path:
-        model(tf.ones((1,512,512,3)))
-        model.load_weights(ckpt_path)
-        print(f"Loding pretrained weights from {ckpt_path} !")
 
     model.freeze = True
 
@@ -70,6 +67,11 @@ def main():
         staircase=True)
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
     model.compile(optimizer=optimizer, loss=centernet_loss, run_eagerly=False)
+    
+    if ckpt_path:
+        model(tf.ones((1,512,512,3)))
+        model.load_weights(ckpt_path)
+        print(f"Loding pretrained weights from {ckpt_path} !")
     
 
     model.fit(x=train_dataset,
@@ -91,9 +93,10 @@ if __name__ == "__main__":
     freeze = True 
     #freeze = False #dsaint31 
     finetune = True or freeze
-    ckpt_path = "./logs/test/20220525-231955/ckpt.h5"
-    ckpt_path = "./logs/test/20220526-002254/ckpt.h5"
-    # ckpt_path =  "./logs/test/20220417-140619"
+
+    ckpt_path = None
+    #ckpt_path =  "./logs/test/20220608-132408/ckpt.h5"
+    ckpt_path =  "./logs/test/20220608-134831/ckpt.h5"
 
     # data_path = "E:\github2\centernet-keras\VOCdevkit\VOC2007"
     data_path = "../VOCdevkit/ceph_VOC2007"

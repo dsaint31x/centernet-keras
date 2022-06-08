@@ -39,21 +39,25 @@ def topk(hm, max_objects=100):
     """
     hm = nms(hm)
     b, h, w, c = hm.shape
+
+    # dsaint31, at least, one instance returned per each class 
+    # hm_t = tf.transpose(hm,perm=[0,3,1,2])
+    # hm_t = tf.reshape(hm, (b,c, -1))  # (b,c, h*w)
+    # remain = max_objects %c
+    # max_objs_per_cls = tf.cast(max_objects//c, tf.int32)
+    # scores, indices = tf.math.top_k(hm_t, k=max_objs_per_cls, sorted=True)  # (b, c, k)
+    # scores = tf.transpose(scores,perm=[0,2,1])
+    # indices = tf.transpose(indices,perm=[0,2,1])
+    # scores = tf.reshape(scores,(b,-1))
+    # indices = tf.reshape(indices,(b,-1))
+    # class_ids = tf.constant(tf.range(0,c))
+    # class_ids = tf.tile(class_ids, (max_objs_per_cls,))
+    # xs = indices % w
+    # ys = indices // w
+
+
+
     hm = tf.reshape(hm, (b, -1))  # (b, h*w*c)
-
-    """
-    hm = tf.transpose(hm,perm=[0,3,1,2])
-
-    hm = tf.reshape(hm, (b,c, -1))  # (b, h*w*c)
-    scores, indices = tf.math.top_k(hm, k=max_objects//3, sorted=True)  # (b, c, k)
-    scores = tf.transpose(scores,perm=[0,2,1])
-    indices = tf.transpose(indices,perm=[0,2,1])
-    scores = tf.reshape(scores,(b,-1))
-    indices = tf.reshape(indices,(b,-1))
-    """
-
-
-
     scores, indices = tf.math.top_k(hm, k=max_objects, sorted=True)  # (b, k)
 
     class_ids = indices % c

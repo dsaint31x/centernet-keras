@@ -74,13 +74,13 @@ class VisCallback(keras.callbacks.Callback):
                         ds_ck_cls.add(cls_id)
                     else:
                         continue
-                    if len(ds_ck_cls) == 3:
-                        break #dsaint31
                     color = [int(c) for c in self.colors[cls_id]]
                     cv2.rectangle(images0, (x1, y1), (x2, y2), color, 1)
                     text = "{}: {:.4f}".format(self.class_names[cls_id], conf_pred[i])
                     cv2.putText(images0, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                 color, 1)
+                    if len(ds_ck_cls) == 3:
+                        break #dsaint31
                 
                 images0 = cv2.cvtColor(images0, cv2.COLOR_BGR2RGB)    
                 
