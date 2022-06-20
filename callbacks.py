@@ -64,7 +64,12 @@ class VisCallback(keras.callbacks.Callback):
                 boxes_pred = detections0[:, :4].astype(np.int32)
                 conf_pred = detections0[:, 4].astype(np.float32)
                 cls_ids_pred = detections0[:, 5].astype(np.uint8)
-                num_valid = int(np.sum(conf_pred > 0.2))
+
+
+                ################## 0.05
+                # num_valid = int(np.sum(conf_pred > 0.2))
+                num_valid = int(np.sum(conf_pred > 0.05))
+
                 for i in range(num_valid):
                     x1, y1, x2, y2 = boxes_pred[i].astype(np.int32) * 4
                     cls_id = cls_ids_pred[i].astype(np.int32)
