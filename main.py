@@ -33,6 +33,7 @@ def main():
     # callbacks
     logdir = os.path.join(log_path, datetime.now().strftime("%Y%m%d-%H%M%S"))
     ckpt_h5 = os.path.join(logdir,'ckpt.h5')
+    path_10epoch = os.path.join(logdir,'/10epochs/model_{epoch}epoch.h5')
     tb_callback = keras.callbacks.TensorBoard(logdir, update_freq=100)
     ckpt_callback = keras.callbacks.ModelCheckpoint(
         #filepath=logdir,
@@ -46,6 +47,24 @@ def main():
                                class_names=train_dataset_raw.class_names,
                                logdir=logdir,
                                update_freq=100)
+
+
+    ### Customize saver : Saves each model every 10 epochs
+
+    class CustomSaver(keras.callbacks.Callback):
+        def on_epoch_end(self, epoch, logs={}):
+            if (epoch%10) == 0:  # every 10 epochs
+                keras.callbacks.ModelCheckpoint(
+                    #filepath=logdir,
+                    filepath=path_10epoch,
+                    save_best_only=True,
+                    save_weights_only=False,
+                    monitor="val_loss",
+                    verbose=1,
+                )
+    
+    saver = CustomSaver()
+    
 
     # load model
     model = CenterNet(train_dataset_raw.class_names,
@@ -69,7 +88,9 @@ def main():
     model.fit(x=train_dataset,
               validation_data=val_dataset,
               epochs=epochs,
-              callbacks=[tb_callback, ckpt_callback, vis_callback])
+              #####
+              #callbacks=[tb_callback, ckpt_callback, vis_callback])
+              callbacks=[tb_callback, ckpt_callback, vis_callback, saver])
 
 
 if __name__ == "__main__":
@@ -77,7 +98,7 @@ if __name__ == "__main__":
     input_shape = (512, 512)
     backbone = 'resnet50'
 
-    epochs = 10
+    epochs = 2000
     batch_size = 2
     buffer_size = batch_size * 5
     lr = 1e-2

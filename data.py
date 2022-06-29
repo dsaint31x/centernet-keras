@@ -134,7 +134,8 @@ class VOCDataset:
         'Cervical point',  
     ]"""
     
-    ID2LABEL = ['Glabella', 'R3', 'Nasion']
+    #ID2LABEL = ['Glabella', 'R3', 'Nasion']
+    ID2LABEL = ['Glabella', 'R3', 'Cervical point', 'Go-2 Ramus down', 'Naison', 'Pogonion']
 
     def __init__(self, path, 
                  input_shape, 
